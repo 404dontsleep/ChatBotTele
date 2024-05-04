@@ -1,6 +1,7 @@
 const request = require("request");
 const bot = require("../bot/bot");
 const history = [];
+const dict = require("../assets/dict");
 bot.onText(/\/noitu/, async (msg) => {
   if (history[msg.chat.id] == undefined) history[msg.chat.id] = [];
   const args = msg.text.split(" ");
@@ -56,25 +57,20 @@ function check(text1, text2) {
   return text1.split(" ")[1] == text2.split(" ")[0];
 }
 async function TraCuu(text) {
-  return new Promise((resolve) => {
-    request.get(
-      {
-        url: `http://tratu.soha.vn/extensions/curl_suggest.php?search=${encodeURI(
-          text
-        )}&dict=vn_vn`,
-        headers: {
-          Accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-        },
-      },
-      (err, res, body) => {
-        if (body) {
-          const regex = />(.*?)<\//gm;
-          const matches = [...body.matchAll(regex)].map((match) => match[1]);
-          resolve(matches.filter((x) => x.split(" ").length == 2));
-        }
-        resolve([]);
-      }
-    );
-  });
+  const args = text.split(" ");
+  if (args.length == 2) {
+    if (dict[args[0]] && dict[args[0]].indexOf(args[1]) != -1) {
+      return [text];
+    }
+  }
+  if (args.length == 1) {
+    if (dict[args[0]]) {
+      const ret = [];
+      dict[args[0]].forEach((x) => {
+        ret.push(args[0] + " " + x);
+      });
+      return ret;
+    }
+  }
+  return [];
 }
