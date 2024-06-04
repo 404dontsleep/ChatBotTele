@@ -6,3 +6,4 @@ require("./function/weather");
 require("./function/baomoi");
 require("./function/gemini");
 require("./function/genimage");
+require("./function/quiz");
