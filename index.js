@@ -7,3 +7,4 @@ require("./function/baomoi");
 require("./function/gemini");
 require("./function/genimage");
 require("./function/quiz");
+require("./function/wordle");
