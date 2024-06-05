@@ -16,7 +16,7 @@ bot.onText(/\/noitu/, async (msg) => {
         if ((await TraCuu(text)).length > 0) {
           history[msg.chat.id].unshift(text);
         } else {
-          bot.sendMessage(msg.chat.id, "Không hợp lệ");
+          bot.sendMessage(msg.chat.id, "Không hợp lệ, Bạn thua");
           history[msg.chat.id] = [];
           return;
         }
