@@ -2,16 +2,17 @@ const bot = require("../bot/bot");
 const Quiz = require("../assets/quiz");
 
 bot.onText(/\/quiz/, async (msg) => {
-  const quiz = await Quiz.startQuiz(msg.chat.id);
   await nextQuiz(msg.chat.id);
 });
-async function nextQuiz(id) {
+async function nextQuiz(id, last = "") {
   const quiz = await Quiz.startQuiz(id);
   const nextQuiz = await quiz.nextQuiz();
-  const question = nextQuiz.assoc
-    .split(" ")
-    .map((x, i) => i + 1 + ". " + x.trim())
-    .join("\n");
+  const question =
+    last +
+    nextQuiz.assoc
+      .split(" ")
+      .map((x, i) => i + 1 + ". " + x.trim())
+      .join("\n");
   const options = {
     reply_markup: {
       inline_keyboard: [
@@ -39,13 +40,11 @@ bot.on("callback_query", async (msg) => {
   const callback_data = msg.data;
   if (callback_data == "quiz_true" || callback_data == "quiz_false") {
     if (callback_data == "quiz_true") {
-      await bot.sendMessage(chatId, "Chính xác");
+      await nextQuiz(chatId, "Chính xác\n\n");
     } else {
-      await bot.sendMessage(chatId, "Sai rồi");
+      await nextQuiz(chatId, "Sai rồi\n\n");
     }
     await bot.deleteMessage(chatId, msg.message.message_id);
-
-    await nextQuiz(chatId);
   }
 });
 

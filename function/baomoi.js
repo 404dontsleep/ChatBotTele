@@ -62,7 +62,7 @@ function sendNews(chatId, newsArticles, messageId = null) {
   }
   {
     bot.sendPhoto(chatId, newsArticles[0].thumb, {
-      caption: `<b>${newsArticles[0].title}</b>\n${newsArticles[0].description}\n<a href="https://baomoi.com${newsArticles[0].url}">Read More</a>`,
+      caption: `<b>${newsArticles[0].title}</b>\n<a href="https://baomoi.com${newsArticles[0].url}">Read More</a>`,
       parse_mode: "HTML",
       reply_markup: JSON.stringify({
         inline_keyboard: [[{ text: "Next", callback_data: `next_${1}` }]],
