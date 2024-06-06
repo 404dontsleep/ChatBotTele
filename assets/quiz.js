@@ -1,10 +1,13 @@
 const request = require("request");
 const USERS = [];
 class Quiz {
-  static async startQuiz(id) {
+  static async startQuiz(id, area = "toeic") {
     const quiz = new Quiz();
+    quiz.area = area;
     USERS[id] = quiz;
     quiz.quizs = [];
+    await quiz.startQuiz();
+    quiz.quizs = await quiz.getQuiz(quiz.cookie);
     return quiz;
   }
   static async getID(id) {
@@ -16,9 +19,10 @@ class Quiz {
   async startQuiz() {
     return new Promise((resolve) => {
       request.get(
-        "https://www.twinword.com/exam/leveltest.php?area=toeic",
+        "https://www.twinword.com/exam/leveltest.php?area=" + this.area,
         function (error, response, body) {
           const cookies = response.headers["set-cookie"][0];
+          this.cookie = cookies;
           resolve(cookies);
         }
       );
@@ -26,8 +30,7 @@ class Quiz {
   }
   async nextQuiz() {
     if (this.quizs.length == 0) {
-      const cookie = await this.startQuiz();
-      this.quizs = await this.getQuiz(cookie);
+      return null;
     }
     const quiz = this.quizs.shift();
     return quiz;

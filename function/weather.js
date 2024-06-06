@@ -60,7 +60,7 @@ bot.onText(/\/weather/, (msg, match) => {
     bot.sendMessage(chatId, `Please provide city name`);
     return;
   }
-  locations[chatId] = city;
+  locations[chatId] = city.join(" ");
   getWeather(chatId, city.join(" "));
 });
 const mainWeather2Img = {
