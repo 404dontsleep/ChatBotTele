@@ -13,7 +13,7 @@ async function nextQuiz(id, last = "") {
   const quiz = await Quiz.getID(id);
   const nextQuiz = await quiz.nextQuiz();
   if (nextQuiz == null) {
-    bot.sendMessage(id, "Hoàn thành điểm" + scores[id] + "/10");
+    bot.sendMessage(id, "Hoàn thành điểm " + scores[id] + "/10");
     return;
   }
   const question =
